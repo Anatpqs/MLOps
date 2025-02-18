@@ -4,4 +4,5 @@ from .pipeline import create_pipeline
 
 
 def register_pipelines() -> Dict[str, Pipeline]:
-    return {"loading": create_pipeline()}  # Retourne la pipeline `processing`
+    """Registers the pipeline and returns a dictionary of pipelines."""
+    return {"loading": create_pipeline()}  # Returns the `data_processing` pipeline

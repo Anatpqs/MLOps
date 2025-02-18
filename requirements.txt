@@ -8,3 +8,4 @@ scikit-learn~=1.5.1
 google-cloud-storage==3.0.0
 tensorflow
 hyperopt
+pre-commit
