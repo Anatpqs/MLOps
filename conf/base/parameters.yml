@@ -2,3 +2,7 @@ test_ratio: 0.3
 time_step: 60
 gcp_project_id: "mlops-451309"
 gcs_primary_folder: "bucket_projet_mlops/primary/primary.csv"
+raw_filepath: "data/01_raw/yahoo_stock.csv"
+features: ["Open", "High", "Low", "Volume", "MA7", "MA30"]
+seq_length: 30
+automl_max_evals: 5

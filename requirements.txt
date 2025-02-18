@@ -5,4 +5,6 @@ kedro-viz>=6.7.0
 kedro[jupyter]~=0.19.11
 notebook
 scikit-learn~=1.5.1
-google-cloud-storage=3.0.0
+google-cloud-storage==3.0.0
+tensorflow
+hyperopt
