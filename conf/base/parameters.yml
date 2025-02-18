@@ -1,0 +1,4 @@
+test_ratio: 0.3
+time_step: 60
+gcp_project_id: "mlops-451309"
+gcs_primary_folder: "bucket_projet_mlops/primary/primary.csv"
