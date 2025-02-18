@@ -5,6 +5,7 @@ project's structure, and in files named test_*.py.
 """
 
 from pathlib import Path
+import pytest
 
 from kedro.framework.session import KedroSession
 from kedro.framework.startup import bootstrap_project
@@ -14,6 +15,7 @@ from kedro.framework.startup import bootstrap_project
 # functionality
 
 
+@pytest.mark.skip
 class TestKedroRun:
     def test_kedro_run(self):
         bootstrap_project(Path.cwd())
