@@ -8,10 +8,23 @@ raw_data:
   filepath: data/01_raw/yahoo_stock.csv
 
 X_train:
-  type: MemoryDataset
+  type: pickle.PickleDataset
+  filepath: data/05_model_input/X_train.pkl
+  backend: pickle
 X_test:
-  type: MemoryDataset
+  type: pickle.PickleDataset
+  filepath: data/05_model_input/X_test.pkl
+  backend: pickle
 y_train:
-  type: MemoryDataset
+  type: pickle.PickleDataset
+  filepath: data/05_model_input/y_train.pkl
+  backend: pickle
 y_test:
-  type: MemoryDataset
+  type: pickle.PickleDataset
+  filepath: data/05_model_input/y_test.pkl
+  backend: pickle
+
+trained_model:
+  type: pickle.PickleDataset
+  filepath: data/06_models/trained_model.pkl
+  backend: pickle
