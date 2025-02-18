@@ -3,6 +3,7 @@ import glob
 from google.cloud import storage
 import os
 
+
 def load_csv_from_bucket(project: str, bucket_path: str) -> pd.DataFrame:
     """
     Charge un seul fichier CSV depuis un bucket Google Cloud Storage.
@@ -15,7 +16,9 @@ def load_csv_from_bucket(project: str, bucket_path: str) -> pd.DataFrame:
     blobs = list(storage_client.list_blobs(bucket_name, prefix=folder))
 
     if not blobs:
-        raise FileNotFoundError(f"Aucun fichier trouvé dans le bucket {bucket_name} avec le préfixe {folder}")
+        raise FileNotFoundError(
+            f"Aucun fichier trouvé dans le bucket {bucket_name} avec le préfixe {folder}"
+        )
 
     # Prend le premier fichier trouvé
     blob = blobs[0]

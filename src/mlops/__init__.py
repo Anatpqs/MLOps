@@ -1,4 +1,3 @@
-"""MLOps
-"""
+"""MLOps"""
 
 __version__ = "0.1"
