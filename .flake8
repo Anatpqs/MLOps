@@ -2,3 +2,4 @@
 max-line-length = 120
 max-complexity = 16
 exclude = .git,.ipython,__pycache__,venv,build,dist
+ignore = E203
