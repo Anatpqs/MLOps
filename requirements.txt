@@ -10,3 +10,5 @@ tensorflow
 hyperopt
 pre-commit
 shap
+python-dotenv
+mlflow

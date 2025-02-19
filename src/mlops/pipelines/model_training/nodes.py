@@ -1,3 +1,4 @@
+import os
 import numpy as np
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dropout, Dense
@@ -5,6 +6,9 @@ from tensorflow import keras
 from hyperopt import hp, tpe, fmin, Trials
 from sklearn.model_selection import KFold
 from sklearn.metrics import mean_squared_error
+from mlflow.models.signature import infer_signature
+import mlflow
+from .utils import save_pr_curve
 
 
 def objective(params, X, y, seq_length):
@@ -53,7 +57,7 @@ def objective(params, X, y, seq_length):
     return np.mean(scores)
 
 
-def optimize_hyperparameters(X, y, seq_length):
+def optimize_hyperparameters(X, y, seq_length, max_evals):
     """
     Optimizes hyperparameters using Bayesian search with Hyperopt.
     """
@@ -69,7 +73,7 @@ def optimize_hyperparameters(X, y, seq_length):
         fn=lambda params: objective(params, X, y, seq_length),
         space=search_space,
         algo=tpe.suggest,
-        max_evals=5,
+        max_evals=max_evals,
         trials=trials,
     )
     return best
@@ -108,22 +112,44 @@ def train_best_model(X, y, seq_length, best_params):
     return model
 
 
-def auto_ml(X_train, y_train, X_test, y_test, seq_length, max_evals=5):
+def auto_ml(
+    X_train,
+    y_train,
+    X_test,
+    y_test,
+    seq_length,
+    max_evals=5,
+    log_to_mlflow=False,
+    experiment_id=-1,
+):
     """
     Runs hyperparameter optimization and trains the best model.
-    Returns the trained model, optimal hyperparameters, and test RMSE.
+    If log_to_mlflow is True, it will log parameters, metrics and artifacts to MLflow.
+    Returns a tuple with the trained model, best hyperparameters, test RMSE and mlflow_run_id.
     """
-    # Hyperparameter tuning is done using X_train
-    # Then the best model is trained on X_train and evaluated on X_test
-    best_params = optimize_hyperparameters(X_train, y_train, seq_length)
+    best_params = optimize_hyperparameters(X_train, y_train, seq_length, max_evals)
     print("Best hyperparameters found:", best_params)
 
-    # Train the model with the best hyperparameters
     model = train_best_model(X_train, y_train, seq_length, best_params)
 
-    # Evaluate on the test set
     y_pred = model.predict(X_test)
     rmse = np.sqrt(mean_squared_error(y_test, y_pred))
     print(f"Test set RMSE: {rmse:.4f}")
 
-    return {"model": model, "best_params": best_params, "rmse": rmse}
+    run_id = ""
+    if log_to_mlflow:
+        mlflow.set_tracking_uri(os.getenv("MLFLOW_SERVER"))
+        run = mlflow.start_run(experiment_id=experiment_id)
+        run_id = run.info.run_id
+
+        mlflow.log_metrics({"rmse": rmse})
+        mlflow.log_params(best_params)
+        save_pr_curve(X_test, y_test, model)
+        mlflow.log_artifacts("data/08_reporting", artifact_path="plots")
+
+        signature = infer_signature(X_train, model.predict(X_train))
+        mlflow.keras.log_model(model, "model", signature=signature)
+        mlflow.end_run()
+
+    # Retourner un tuple dans l'ordre attendu
+    return model, best_params, rmse, run_id
