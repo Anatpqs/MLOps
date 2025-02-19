@@ -2,6 +2,12 @@
 
 [![Powered by Kedro](https://img.shields.io/badge/powered_by-kedro-ffc900?logo=kedro)](https://kedro.org)
 
+First of all run:
+
+```
+pre-commit install
+```
+
 ## Overview
 
 This is your new Kedro project with Kedro-Viz setup, which was generated using `kedro 0.19.11`.
