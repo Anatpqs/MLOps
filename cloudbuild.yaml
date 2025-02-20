@@ -1,3 +1,37 @@
+# # Liste des Cloud Builders : https://console.cloud.google.com/gcr/images/cloud-builders/GLOBAL
+# steps:
+# - name: "noobzik/uv-gcp-cloud-build"
+#   id: CI
+#   entrypoint: /bin/bash
+#   secretEnv: ['SERVICE_ACCOUNT']
+#   env:
+#     - PROJECT_ID=$PROJECT_ID
+#   args:
+#   - -c
+#   - |
+#     echo "$$SERVICE_ACCOUNT" > service_account.json
+#     if ! gcloud auth activate-service-account --key-file=service_account.json; then
+#       echo "ERROR: gcloud authenfication failed!"
+#       exit 1
+#     fi
+#     gcloud config set project "$PROJECT_ID"
+#     chmod a+x install.sh &&
+#     ./install.sh &&
+#     source .venv/bin/activate &&
+#     export PYTHONPATH=$(pwd)/src &&
+#     python -m pytest ./tests/pipelines/data_processing &&
+#     python -m pytest ./tests/pipelines/model_training
+
+# logs_bucket: gs://bucket_projet_mlops/logs_build_cloud_build
+# availableSecrets:
+#   secretManager:
+#   - versionName: projects/$PROJECT_ID/secrets/cloudbuild/versions/1
+#     env: SERVICE_ACCOUNT
+
+
+
+# cloudbuild.yaml
+# Liste des Cloud Builders : https://console.cloud.google.com/gcr/images/cloud-builders/GLOBAL
 steps:
 - name: "noobzik/uv-gcp-cloud-build"
   id: CI
@@ -8,26 +42,39 @@ steps:
   args:
     - -c
     - |
+      # 1) Créer le dossier conf/local s'il n'existe pas
       mkdir -p conf/local
+
+      # 2) Copier le contenu du secret dans conf/local/service_account.json
       echo "$$SERVICE_ACCOUNT" > conf/local/service_account.json
+
+      # 3) Authentifier gcloud avec ce fichier de clé
       if ! gcloud auth activate-service-account --key-file=conf/local/service_account.json; then
-        echo "ERROR: gcloud authenfication failed!"
+        echo "ERROR: gcloud authentication failed!"
         exit 1
       fi
+
+      # 4) Définir le projet GCP
       gcloud config set project "$PROJECT_ID"
 
+      # 5) Installation des dépendances
       chmod a+x install.sh
       ./install.sh
+
+      # 6) Activer l'environnement virtuel
       source .venv/bin/activate
 
-      # Facultatif : pour le code Python qui attend la var GOOGLE_APPLICATION_CREDENTIALS
+      # 7) (Optionnel) Pour tout code Python cherchant la variable GOOGLE_APPLICATION_CREDENTIALS :
       export GOOGLE_APPLICATION_CREDENTIALS=conf/local/service_account.json
 
+      # 8) Lancer vos tests (pytest) ou autre pipeline
       python -m pytest ./tests/pipelines/data_processing
       python -m pytest ./tests/pipelines/model_training
 
 logs_bucket: gs://bucket_projet_mlops/logs_build_cloud_build
+
 availableSecrets:
   secretManager:
-  - versionName: projects/$PROJECT_ID/secrets/cloud-build/versions/1
-    env: SERVICE_ACCOUNT
+    # Indique à Cloud Build de charger la version 1 du secret "cloud-build"
+    - versionName: projects/$PROJECT_ID/secrets/cloud-build/versions/1
+      env: SERVICE_ACCOUNT
