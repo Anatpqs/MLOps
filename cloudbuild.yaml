@@ -22,6 +22,8 @@ steps:
     python -m pytest ./tests/pipelines/loading &&
     python -m pytest ./tests/pipelines/data_processing &&
     python -m pytest ./tests/pipelines/model_training
+
+
 - name: "noobzik/uv-gcp-cloud-build"
   id: CD
   entrypoint: /bin/bash
@@ -40,9 +42,8 @@ steps:
   - 'ENV=$BRANCH_NAME'
   - 'MLFLOW_SERVER=$_MLFLOW_SERVER'
 
-
-logs_bucket: gs://purchase_predict
+logs_bucket: gs://bucket_projet_mlops/logs_build_cloud_build
 availableSecrets:
   secretManager:
-  - versionName: projects/$PROJECT_ID/secrets/cloud-build/versions/1
+  - versionName: projects/$PROJECT_ID/secrets/cloudbuild/versions/1
     env: SERVICE_ACCOUNT
