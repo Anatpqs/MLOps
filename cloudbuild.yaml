@@ -9,8 +9,8 @@ steps:
   args:
   - -c
   - |
-    echo "$$SERVICE_ACCOUNT" > SERVICE_ACCOUNT.json
-    if ! gcloud auth activate-service-account --key-file=SERVICE_ACCOUNT.json; then
+    echo "$$SERVICE_ACCOUNT" > service_account.json
+    if ! gcloud auth activate-service-account --key-file=service_account.json; then
       echo "ERROR: gcloud authenfication failed!"
       exit 1
     fi
@@ -23,5 +23,5 @@ steps:
 logs_bucket: gs://bucket_projet_mlops/logs_build_cloud_build
 availableSecrets:
   secretManager:
-  - versionName: projects/$PROJECT_ID/secrets/cloud-build/versions/1
+  - versionName: projects/$PROJECT_ID/secrets/cloudbuild/versions/1
     env: SERVICE_ACCOUNT
