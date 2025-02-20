@@ -5,4 +5,9 @@ gcs_primary_folder: "bucket_projet_mlops/primary/primary.csv"
 raw_filepath: "data/01_raw/yahoo_stock.csv"
 features: ["Open", "High", "Low", "Volume", "MA7", "MA30"]
 seq_length: 30
-automl_max_evals: 5
+
+# Parameters for AutoML / model training
+automl_max_evals: 1 # Number of models to train
+mlflow_enabled: True # Unable or not MLflow logging
+mlflow_experiment_id: 1 # MLflow experiment ID
+mlflow_model_registry: "LSTM"

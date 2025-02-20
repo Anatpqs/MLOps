@@ -1,0 +1,3 @@
+MLFLOW_SERVER=http://35.208.23.119/
+ENV=staging
+GOOGLE_APPLICATION_CREDENTIALS="conf/local/service_account.json"

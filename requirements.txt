@@ -9,3 +9,6 @@ google-cloud-storage==3.0.0
 tensorflow
 hyperopt
 pre-commit
+shap
+python-dotenv
+mlflow

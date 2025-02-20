@@ -28,3 +28,6 @@ trained_model:
   type: pickle.PickleDataset
   filepath: data/06_models/trained_model.pkl
   backend: pickle
+
+mlflow_run_id:
+  type: MemoryDataset

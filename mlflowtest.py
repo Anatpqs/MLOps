@@ -11,6 +11,20 @@ from sklearn.metrics import mean_squared_error
 import mlflow
 import mlflow.keras
 from mlflow.models.signature import infer_signature
+<<<<<<< HEAD
+=======
+from google.cloud import storage
+
+# Authentification à Google Cloud avec la clé correspondant au compte de service MLflow
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.path.expanduser(
+    "conf/local/service_account.json"
+)
+
+# Nouvel URI de l'interface MLflow hébergée sur la VM GCP
+mlflow.set_tracking_uri("http://35.208.23.119")
+# Création du client pour Google Cloud Storage (optionnel si vous souhaitez interagir avec le bucket)
+client = storage.Client()
+>>>>>>> 34a4f03dc9748723a090a9c171b2cf2861722e54
 
 
 def load_data():
@@ -46,8 +60,12 @@ def plot_predictions(test_dates, y_true, y_pred, plot_path):
 
 
 def main():
+<<<<<<< HEAD
     # Configuration MLflow (ici en local)
     mlflow.set_tracking_uri("http://127.0.0.1:5000")
+=======
+    # Configuration de MLflow avec le tracking URI pointant vers le serveur distant
+>>>>>>> 34a4f03dc9748723a090a9c171b2cf2861722e54
     mlflow.set_experiment("stock_forecasting")
 
     # Chargement des datasets prétraités
@@ -67,8 +85,12 @@ def main():
         1
     ]  # X_train de forme (nb_samples, seq_length, nb_features)
 
+<<<<<<< HEAD
     # Pour le graphique, nous avons besoin d'une série de dates pour le jeu de test.
     # Ici, on simule des dates de test en partant d'une date fictive.
+=======
+    # Pour le graphique, on simule des dates de test à partir d'une date fictive
+>>>>>>> 34a4f03dc9748723a090a9c171b2cf2861722e54
     test_dates = pd.date_range(start="2020-01-01", periods=len(y_test))
 
     # Démarrer un run MLflow pour tracker cette expérience
@@ -122,8 +144,12 @@ def main():
 
         # Inférer la signature du modèle à partir des données d'entraînement
         signature = infer_signature(X_train, model.predict(X_train))
+<<<<<<< HEAD
         # Conversion de l'input_example en DataFrame afin que MLflow puisse le sauvegarder correctement
         # Log du modèle entraîné dans MLflow
+=======
+        # Log du modèle entraîné dans MLflow avec mlflow.keras
+>>>>>>> 34a4f03dc9748723a090a9c171b2cf2861722e54
         mlflow.keras.log_model(model, "lstm_model", signature=signature)
 
         print(f"Run ID: {run.info.run_id}")
