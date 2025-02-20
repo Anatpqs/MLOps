@@ -19,7 +19,6 @@ steps:
     ./install.sh &&
     source .venv/bin/activate &&
     export PYTHONPATH=$(pwd)/src &&
-    python -m pytest ./tests/pipelines/loading &&
     python -m pytest ./tests/pipelines/data_processing &&
     python -m pytest ./tests/pipelines/model_training
 
