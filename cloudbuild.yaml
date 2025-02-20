@@ -18,6 +18,7 @@ steps:
     chmod a+x install.sh &&
     ./install.sh &&
     source .venv/bin/activate &&
+    export GOOGLE_APPLICATION_CREDENTIALS=service_account.json &&
     export PYTHONPATH=$(pwd)/src &&
     python -m pytest ./tests/pipelines/data_processing &&
     python -m pytest ./tests/pipelines/model_training
