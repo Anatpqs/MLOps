@@ -3,31 +3,35 @@ from mlops.pipelines.model_training.pipeline import create_pipeline
 
 
 def test_pipeline(catalog_test):
-    """Integration test for the Kedro pipeline."""
+    """Integration test for the Kedro pipeline with separate outputs."""
+
     runner = SequentialRunner()
     pipeline = create_pipeline()
     pipeline_output = runner.run(pipeline, catalog_test)
 
+    # Vérifier que le pipeline produit les 4 sorties attendues
+    assert "model" in pipeline_output, "The pipeline does not generate 'model' output."
     assert (
-        "trained_model" in pipeline_output
-    ), "The pipeline does not generate the expected output."
-
-    trained_model_output = pipeline_output["trained_model"]
-    assert isinstance(
-        trained_model_output, dict
-    ), "The model output must be a dictionary."
-
-    assert "model" in trained_model_output, "The output must contain the trained model."
-    assert hasattr(
-        trained_model_output["model"], "predict"
-    ), "The trained model must have a predict method."
-
+        "best_params" in pipeline_output
+    ), "The pipeline does not generate 'best_params' output."
+    assert "rmse" in pipeline_output, "The pipeline does not generate 'rmse' output."
     assert (
-        "best_params" in trained_model_output
-    ), "The output must contain the best hyperparameters."
-    assert isinstance(
-        trained_model_output["best_params"], dict
-    ), "The hyperparameters must be a dictionary."
+        "mlflow_run_id" in pipeline_output
+    ), "The pipeline does not generate 'mlflow_run_id' output."
 
-    assert "rmse" in trained_model_output, "The output must contain the RMSE metric."
-    assert isinstance(trained_model_output["rmse"], float), "The RMSE must be a float."
+    model = pipeline_output["model"]
+    best_params = pipeline_output["best_params"]
+    rmse = pipeline_output["rmse"]
+    mlflow_run_id = pipeline_output["mlflow_run_id"]
+
+    # Verify that the model is a Keras model
+    assert hasattr(model, "predict"), "The trained model must have a predict method."
+
+    # Verify that the best_params is a dictionary
+    assert isinstance(best_params, dict), "The hyperparameters must be a dictionary."
+
+    # Verify that the RMSE is a float
+    assert isinstance(rmse, float), "The RMSE must be a float."
+
+    # Verify that the mlflow_run_id is a string
+    assert isinstance(mlflow_run_id, str), "mlflow_run_id should be a string."

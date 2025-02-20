@@ -24,8 +24,10 @@ def catalog_test():
             "model": MemoryDataset(
                 joblib.load(os.path.expanduser("./data/06_models/trained_model.pkl"))
             ),
-            "params:seq_length": MemoryDataset(30),  # Example parameter value
-            "params:automl_max_evals": MemoryDataset(5),  # Example value for max_evals
+            "params:seq_length": MemoryDataset(30),
+            "params:automl_max_evals": MemoryDataset(1),
+            "params:mlflow_enabled": MemoryDataset(False),  # ou True, selon ton besoin
+            "params:mlflow_experiment_id": MemoryDataset(-1),  # ou 1, selon ton besoin
         }
     )
 

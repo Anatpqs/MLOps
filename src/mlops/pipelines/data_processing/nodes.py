@@ -20,6 +20,10 @@ def compute_features(df: pd.DataFrame) -> pd.DataFrame:
     df["MA30"] = df["Close"].rolling(window=30).mean()  # 30-day moving average
     df["Return"] = df["Close"].pct_change()  # Percentage change in closing price
 
+    df["feature1"] = (
+        df["Return"].rolling(window=7).mean()
+    )  # Feature 1: 7-day MA of returns
+    df["feature2"] = df["MA7"] - df["MA30"]  # Feature 1: 7-day MA - 30-day MA
     # Remove missing values resulting from moving averages and return calculations
     df = df.dropna().reset_index(drop=True)
     return df
@@ -32,6 +36,7 @@ def create_sequences_and_scale(df: pd.DataFrame, features: list, seq_length: int
     """
     scaler = MinMaxScaler()
     # Normalize the selected features and the target ('Close' price)
+
     data = scaler.fit_transform(df[features + ["Close"]])
     X, y = create_sequences(data, seq_length)
     return X, y, scaler

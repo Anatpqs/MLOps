@@ -18,6 +18,7 @@ steps:
     chmod a+x install.sh &&
     ./install.sh &&
     source .venv/bin/activate &&
+    export PYTHONPATH=$(pwd)/src &&
     pytest .
 
 logs_bucket: gs://bucket_projet_mlops/logs_build_cloud_build
