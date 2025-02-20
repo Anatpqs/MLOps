@@ -19,7 +19,9 @@ steps:
     ./install.sh &&
     source .venv/bin/activate &&
     export PYTHONPATH=$(pwd)/src &&
-    pytest .
+    python -m pytest ./tests/pipelines/loading &&
+    python -m pytest ./tests/pipelines/data_processing &&
+    python -m pytest ./tests/pipelines/model_training
 
 logs_bucket: gs://bucket_projet_mlops/logs_build_cloud_build
 availableSecrets:
