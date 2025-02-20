@@ -139,7 +139,7 @@ def auto_ml(
     run_id = ""
     if log_to_mlflow:
         mlflow.set_tracking_uri(os.getenv("MLFLOW_SERVER"))
-        mlflow.set_experiment(str(experiment_id))
+        mlflow.set_experiment("purchase_predict")
         run = mlflow.start_run()
         run_id = run.info.run_id
 
