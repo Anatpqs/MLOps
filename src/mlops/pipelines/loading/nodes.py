@@ -1,5 +1,4 @@
 import pandas as pd
-import glob
 from google.cloud import storage
 import os
 
@@ -8,7 +7,9 @@ def load_csv_from_bucket(project: str, bucket_path: str) -> pd.DataFrame:
     """
     Charge un seul fichier CSV depuis un bucket Google Cloud Storage.
     """
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.path.join(os.getcwd(), "conf/local/service_account.json")
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.path.join(
+        os.getcwd(), "service_account.json"
+    )
     storage_client = storage.Client(project=project)
     bucket_name = bucket_path.split("/")[0]
     folder = "/".join(bucket_path.split("/")[1:])
