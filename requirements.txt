@@ -12,3 +12,4 @@ pre-commit
 shap
 python-dotenv
 mlflow
+pytest
