@@ -22,11 +22,27 @@ steps:
     python -m pytest ./tests/pipelines/loading &&
     python -m pytest ./tests/pipelines/data_processing &&
     python -m pytest ./tests/pipelines/model_training
+- name: "noobzik/uv-gcp-cloud-build"
+  id: CD
+  entrypoint: /bin/bash
+  secretEnv: ['SERVICE_ACCOUNT']
+  args:
+  - -c
+  - |
+    echo "$$SERVICE_ACCOUNT" > service_account.json
+    if ! gcloud auth activate-service-account --key-file=service_account.json; then
+      echo "ERROR: gcloud authenfication failed!"
+      exit 1
+    fi
+    gcloud config set project "$PROJECT_ID"
+    chmod a+x install.sh && ./install.sh && source .venv/bin/activate && kedro run
+  env:
+  - 'ENV=$BRANCH_NAME'
+  - 'MLFLOW_SERVER=$_MLFLOW_SERVER'
 
-logs_bucket: gs://bucket_projet_mlops/logs_build_cloud_build
+
+logs_bucket: gs://purchase_predict
 availableSecrets:
   secretManager:
-  - versionName: projects/$PROJECT_ID/secrets/cloudbuild/versions/1
+  - versionName: projects/$PROJECT_ID/secrets/cloud-build/versions/1
     env: SERVICE_ACCOUNT
-
-
