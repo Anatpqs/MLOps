@@ -18,7 +18,7 @@ steps:
     chmod a+x install.sh &&
     ./install.sh &&
     source .venv/bin/activate &&
-    cp service account.json conf/local/service_account.json &&
+    cp service account.json conf/local/ &&
     export PYTHONPATH=$(pwd)/src &&
     python -m pytest ./tests/pipelines/data_processing &&
     python -m pytest ./tests/pipelines/model_training
