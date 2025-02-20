@@ -162,3 +162,5 @@ mlruns/*
 
 # ignore mlfow local
 plots
+
+!data/01_raw/yahoo_stock.csv                    
