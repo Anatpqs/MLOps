@@ -17,6 +17,7 @@ steps:
     gcloud config set project "$PROJECT_ID"
     chmod a+x install.sh &&
     ./install.sh &&
+    source .venv/bin/activate &&
     pytest .
 
 logs_bucket: gs://bucket_projet_mlops/logs_build_cloud_build
