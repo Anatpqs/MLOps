@@ -40,7 +40,7 @@ steps:
     chmod a+x install.sh && ./install.sh && source .venv/bin/activate && kedro run
   env:
   - 'ENV=$BRANCH_NAME'
-  - 'MLFLOW_SERVER=$_MLFLOW_SERVER'
+  - 'MLFLOW_SERVER=$$_MLFLOW_SERVER'
 
 logs_bucket: gs://bucket_projet_mlops/logs_build_cloud_build
 availableSecrets:
