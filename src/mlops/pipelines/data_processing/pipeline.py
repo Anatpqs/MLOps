@@ -7,7 +7,7 @@ def create_pipeline():
         [
             node(
                 func=load_data,
-                inputs="params:raw_filepath",  # Path defined in the catalog or parameters
+                inputs="params:raw_filepath",
                 outputs="raw_data",
                 name="load_data_node",
             ),
