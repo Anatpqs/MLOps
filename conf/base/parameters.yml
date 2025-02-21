@@ -7,7 +7,7 @@ features: ["Open", "High", "Low", "Volume", "MA7", "MA30"]
 seq_length: 30
 
 # Parameters for AutoML / model training
-automl_max_evals: 1 # Number of models to train
+automl_max_evals: 5 # Number of models to train
 mlflow_enabled: True # Unable or not MLflow logging
-mlflow_experiment_id: 5 # MLflow experiment ID
+mlflow_experiment_id: 1 # MLflow experiment ID
 mlflow_model_registry: "LSTM"
